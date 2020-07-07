@@ -7,14 +7,37 @@
 //
 
 import UIKit
+import AVFoundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, ScannerDelegate {
 
+    private var scanner: Scanner?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        self.scanner = Scanner(withDelegate: self)
+        guard let scanner = self.scanner else {
+            return
+        }
+        scanner.requestCaptureSessionStartRunning()
     }
-
-
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // Mark - AVFoundation delegate methods
+    func cameraView() -> UIView {
+        return self.view
+    }
+    
+    func delegateViewController() -> UIViewController {
+        return self
+    }
+    
+    func scanCompleted(withCode code: String) {
+        print(code)
+    }
 }
 
